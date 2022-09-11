@@ -10,7 +10,7 @@ const productSchema = mongoose.Schema(
       minLength: [3, "Product name at least 3 characters"],
       maxLength: [100, "Product name is too large"],
     },
-    descrition: {
+    description: {
       type: String,
       required: true,
     },
@@ -23,7 +23,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: {
-        value: ["kg", "liter", "pcs"],
+        values: ["kg", "liter", "pcs"],
         message: "Unit cant be {VALUE},must be kg/liter/pcs",
       },
     },
@@ -43,27 +43,55 @@ const productSchema = mongoose.Schema(
       },
       message: "Quantity must be integer",
     },
-    supplier: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Supplier",
-    },
-    categories: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        _id: mongoose.Schema.Types.ObjectId,
-      },
-    ],
     status: {
-      values: {
-        enum: ["in stock", "out of stock", "discontinuing"],
+      type: String,
+      required: true,
+      enum: {
+        values: ["in-stock", "out-of-stock", "discontinued"],
+        message: "Can't be {VALUE}",
       },
-      message: "Status can't be {VALUE}",
     },
+    // supplier: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Supplier",
+    // },
+    // categories: [
+    //   {
+    //     name: {
+    //       type: String,
+    //       required: true,
+    //     },
+    //     _id: mongoose.Schema.Types.ObjectId,
+    //   },
+    // ],
   },
   {
     timestamps: true,
   }
 );
+
+//instance injection
+
+productSchema.methods.logger = function () {
+  console.log(`the save one is ${this.name}`);
+};
+
+//middlewares->pre and post
+
+productSchema.pre("save", function (next) {
+  console.log("before save");
+  if (this.quantity == 0) {
+    this.status = "out-of-stock";
+  }
+  next();
+});
+// productSchema.post("save", function (doc, next) {
+//   console.log("after save");
+//   next();
+// });
+
+//model create
+
+const Product = mongoose.model("Product", productSchema);
+
+module.exports = { Product };
