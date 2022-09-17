@@ -62,3 +62,43 @@ exports.getProduct = async (req, res) => {
     res.json({ status: 400, message: error.message });
   }
 };
+
+exports.updateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    // without run validator database takes null value
+    const result = await Product.updateOne(
+      { _id: id },
+      { $inc: req.body },
+      { runValidators: true }
+    );
+    // const product = await Product.findById(id);
+    // const result = await product.set(req.body).save();
+    res.status(200).json({
+      status: 200,
+      data: result,
+      message: "Data updated successfully",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+const bulkProductService = async (data) => {
+  const result = await Product.updateMany({ _id: data.ids }, data.data, {
+    runValidators: true,
+  });
+  console.log(result);
+};
+exports.bulkProductUpdate = async (req, res, next) => {
+  try {
+    const result = await bulkProductService(req.body);
+    res.status(200).json({
+      status: 200,
+      data: result,
+      message: "Data updated successfully",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
