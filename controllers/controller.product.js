@@ -1,4 +1,9 @@
 const { Product } = require("../models/model.product");
+const {
+  bulkDeleteServiceProduct,
+  productServiceDelete,
+  bulkProductService,
+} = require("../services/service");
 
 exports.welcome = (req, res) => {
   res.send("Route is working! YaY!");
@@ -84,12 +89,7 @@ exports.updateProduct = async (req, res, next) => {
     res.status(400).json({ message: error.message });
   }
 };
-const bulkProductService = async (data) => {
-  const result = await Product.updateMany({ _id: data.ids }, data.data, {
-    runValidators: true,
-  });
-  console.log(result);
-};
+
 exports.bulkProductUpdate = async (req, res, next) => {
   try {
     const result = await bulkProductService(req.body);
@@ -100,5 +100,38 @@ exports.bulkProductUpdate = async (req, res, next) => {
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+exports.deleteProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await productServiceDelete(id);
+    res.status(200).json({
+      status: 200,
+      data: result,
+      message: "Data deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.bulkDeleteById = async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+    const result = await bulkDeleteServiceProduct(ids);
+
+    if (!result.deletedCount) {
+      return res.status(400).json({
+        message: "data not found",
+      });
+    }
+
+    res
+      .status(200)
+      .json({ message: "products deleted successfully", data: result });
+  } catch (error) {
+    res.status(400).json({ status: 400, message: error.message });
   }
 };
