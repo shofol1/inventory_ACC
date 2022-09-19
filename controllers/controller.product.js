@@ -3,6 +3,7 @@ const {
   bulkDeleteServiceProduct,
   productServiceDelete,
   bulkProductService,
+  getAllProducts,
 } = require("../services/service");
 
 exports.welcome = (req, res) => {
@@ -33,7 +34,7 @@ exports.insertProduct = async (req, res, next) => {
     });
   }
 };
-exports.getProduct = async (req, res) => {
+exports.getProduct = async (req, res, next) => {
   try {
     // const product = await Product.find({
     //   $or: [{ name: "iphone" }, { quantity: 100 }],
@@ -56,11 +57,18 @@ exports.getProduct = async (req, res) => {
     // const product = await Product.find({}).select({ _id: 0 });
 
     //using query builder
-    const product = await await Product.where("name")
-      .equals("iphone")
-      .where("price")
-      .gt(100)
-      .limit(1);
+    // const product = await Product.where("name")
+    //   .equals("iphone")
+    //   .where("price")
+    //   .gt(100)
+    //   .limit(1);
+
+    //advanced query
+    const { limit, sort } = req.query;
+    console.log(req.query);
+    // const productObject = req.query;
+    // const excludeProduct = ["sort", "limit", "page"];
+    const product = await getAllProducts(req.query);
 
     res.json({ data: product });
   } catch (error) {
@@ -106,7 +114,7 @@ exports.bulkProductUpdate = async (req, res, next) => {
 exports.deleteProductById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await productServiceDelete(id);
+    const result = await productServiceDelete({});
     res.status(200).json({
       status: 200,
       data: result,

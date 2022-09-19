@@ -1,3 +1,9 @@
+const { Product } = require("../models/model.product");
+
+exports.getAllProducts = async (limit) => {
+  const result = await Product.find({ limit });
+  return result;
+};
 exports.productServiceDelete = async (id) => {
   const result = await Product.deleteOne({ _id: id });
   return result;
