@@ -64,11 +64,22 @@ exports.getProduct = async (req, res, next) => {
     //   .limit(1);
 
     //advanced query
-    const { limit, sort } = req.query;
-    console.log(req.query);
-    // const productObject = req.query;
-    // const excludeProduct = ["sort", "limit", "page"];
-    const product = await getAllProducts(req.query);
+
+    const filters = { ...req.query };
+    const excludeField = ["sort", "limit", "page"];
+    excludeField.forEach((field) => delete filters[field]);
+    // console.log("original object", req.query);
+    // console.log("exclude object", filters);
+    const queries = {};
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      queries.sortBy = sortBy;
+    }
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      queries.fieldBy = fields;
+    }
+    const product = await getAllProducts(filters, queries);
 
     res.json({ data: product });
   } catch (error) {

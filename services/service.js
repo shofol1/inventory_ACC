@@ -1,7 +1,10 @@
 const { Product } = require("../models/model.product");
 
-exports.getAllProducts = async (limit) => {
-  const result = await Product.find({ limit });
+exports.getAllProducts = async (filters, queries) => {
+  console.log(queries);
+  const result = await Product.find({})
+    .sort(queries.sortBy)
+    .select(queries.fieldBy);
   return result;
 };
 exports.productServiceDelete = async (id) => {
