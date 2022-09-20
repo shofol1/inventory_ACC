@@ -2,7 +2,7 @@ const { Product } = require("../models/model.product");
 
 exports.getAllProducts = async (filters, queries) => {
   console.log(queries);
-  const result = await Product.find({})
+  const result = await Product.find(filters)
     .sort(queries.sortBy)
     .select(queries.fieldBy);
   return result;

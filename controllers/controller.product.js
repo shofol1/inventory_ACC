@@ -65,7 +65,16 @@ exports.getProduct = async (req, res, next) => {
 
     //advanced query
 
-    const filters = { ...req.query };
+    let filters = { ...req.query };
+    const filterStingify = JSON.stringify(filters);
+
+    const replacedString = filterStingify.replace(
+      /\b(gt|gte|lte|lt)\b/g,
+      (match) => `$${match}`
+    );
+    console.log(replacedString);
+    filters = JSON.parse(replacedString);
+
     const excludeField = ["sort", "limit", "page"];
     excludeField.forEach((field) => delete filters[field]);
     // console.log("original object", req.query);
