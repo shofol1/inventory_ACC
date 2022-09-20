@@ -3,9 +3,14 @@ const { Product } = require("../models/model.product");
 exports.getAllProducts = async (filters, queries) => {
   console.log(queries);
   const result = await Product.find(filters)
+    .skip(queries.skip)
+    .limit(queries.limit)
     .sort(queries.sortBy)
     .select(queries.fieldBy);
-  return result;
+
+  const total = await Product.countDocuments(filters);
+  const page = Math.ceil(total / queries.limit);
+  return { total, page, result };
 };
 exports.productServiceDelete = async (id) => {
   const result = await Product.deleteOne({ _id: id });

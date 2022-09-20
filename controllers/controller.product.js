@@ -80,6 +80,21 @@ exports.getProduct = async (req, res, next) => {
     // console.log("original object", req.query);
     // console.log("exclude object", filters);
     const queries = {};
+
+    //pagination
+    const { page = 1, limit = 10 } = req.query;
+    if (req.query.page) {
+      //50 products
+      //page 1-->1-10
+      //page 2-->11-20
+      //page 3-->21-30 ----> 3-1=2*10
+      //page 4-->31-40
+      //page 5-->41-50
+      const skip = (page - 1) * parseInt(limit);
+      queries.skip = skip;
+      queries.limit = parseInt(limit);
+    }
+
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
       queries.sortBy = sortBy;
