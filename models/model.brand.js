@@ -6,7 +6,7 @@ const brandSchema = mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      required: true,
+      required: [true, "Please provide a valid brand name."],
       lowercase: true,
       unique: true,
       maxLength: 100,
@@ -15,12 +15,12 @@ const brandSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      validate: [validator.isEmail, "Please provide a valid email address"],
+      validate: [validator.isEmail, "Please provide a valid email address."],
       lowercase: true,
     },
     website: {
       type: String,
-      validator: [validator.isURL, "Please provide a valid url"],
+      validator: [validator.isURL, "Please provide a valid url."],
     },
     location: String,
     product: [

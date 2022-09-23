@@ -8,13 +8,13 @@ const categorySchema = mongoose.Schema(
       type: String,
       trim: true,
       unique: true,
-      required: [true, "Please provide a category name"],
+      required: [true, "Please provide a category name."],
       lowercase: true,
     },
     description: String,
     imageUrl: {
       type: String,
-      validate: [validator.isURL, "Please provide a valid image Url"],
+      validate: [validator.isURL, "Please provide a valid image Url."],
     },
   },
   {
