@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const { ObjectId } = mongoose.Schema.Types;
 const productSchema = mongoose.Schema(
   {
     name: {
@@ -25,10 +26,7 @@ const productSchema = mongoose.Schema(
     },
     imageUrl: [
       {
-        name: {
-          type: String,
-          required: true,
-        },
+        type: String,
         validate: {
           validator: (value) => {
             let isValid = true;
@@ -40,8 +38,8 @@ const productSchema = mongoose.Schema(
                   isValid = false;
                 }
               });
+              return isValid;
             }
-            return isValid;
           },
         },
       },

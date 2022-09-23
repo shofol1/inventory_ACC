@@ -14,7 +14,6 @@ const brandSchema = mongoose.Schema(
     description: String,
     email: {
       type: String,
-      required: true,
       validate: [validator.isEmail, "Please provide a valid email address."],
       lowercase: true,
     },
@@ -25,7 +24,7 @@ const brandSchema = mongoose.Schema(
     location: String,
     product: [
       {
-        type: objectId,
+        type: ObjectId,
         ref: "Product",
       },
     ],
