@@ -178,3 +178,11 @@ exports.bulkDeleteById = async (req, res, next) => {
     res.status(400).json({ status: 400, message: error.message });
   }
 };
+
+exports.uploadImage = async (req, res, next) => {
+  try {
+    res.status(200).json({ data: req.file });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
