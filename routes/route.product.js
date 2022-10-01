@@ -14,7 +14,8 @@ const userRouter = express.Router();
 const { router } = require("../app");
 const uploader = require("../middlewear/middlewear.upload");
 
-userRouter.post("/upload-image", uploader.single("image"), uploadImage);
+// userRouter.post("/upload-image", uploader.single("image"), uploadImage);
+userRouter.post("/upload-image", uploader.array("image"), uploadImage);
 userRouter.get("/", welcome);
 userRouter.get("/all-product", getProduct);
 userRouter.post("/product", insertProduct);
