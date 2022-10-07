@@ -110,11 +110,11 @@ module.exports = User;
 
 /*
 {
-    "email": "mezba1@test.com",
-    "password": "mezba123456#A",
-    "confirmPassword": "mezba123456#A",
-    "firstName": "Mezbaul Abedin",
-    "lastName": "Forhan",
+    "email": "shafol1@test.com",
+    "password": "shafol123456#A",
+    "confirmPassword": "shafol123456#A",
+    "firstName": "Md Ashikul Hossain",
+    "lastName": "Shafol",
     "shippingAddress": "944 osthir Street",
     "presentAddress": "944 osthir Street",
     "permanentAddress": "944 Russell Street",
@@ -124,8 +124,8 @@ module.exports = User;
 /*
 "name":"Manager",
 "email":"managerctg@test.com",
-"password":"mezba123456##",
-"confirmPassword":"mezba123456##",
+"password":"shafol123456##",
+"confirmPassword":"shafol123456##",
 "firtsName":"Manager of",
 "lastName":"CTG",
 "contactNumber":"11111111111",
