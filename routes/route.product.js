@@ -8,20 +8,20 @@ const {
   deleteProductById,
   bulkDeleteById,
   uploadImage,
+  getProductById,
 } = require("../controllers/controller.product");
-const userRouter = express.Router();
+const productRouter = express.Router();
 
 const { router } = require("../app");
 const uploader = require("../middlewear/middlewear.upload");
 
-// userRouter.post("/upload-image", uploader.single("image"), uploadImage);
-userRouter.post("/upload-image", uploader.array("image"), uploadImage);
-userRouter.get("/", welcome);
-userRouter.get("/all-product", getProduct);
-userRouter.post("/product", insertProduct);
-userRouter.patch("/bulk-update", bulkProductUpdate);
-userRouter.delete("/bulk-delete", bulkDeleteById);
-userRouter.patch("/product/:id", updateProduct);
-userRouter.delete("/product/:id", deleteProductById);
-
-module.exports = { userRouter };
+// productRouter.post("/upload-image", uploader.single("image"), uploadImage);
+productRouter.post("/upload-image", uploader.array("image"), uploadImage);
+productRouter.get("/all-product", getProduct);
+productRouter.post("/insert", insertProduct);
+productRouter.patch("/bulk-update", bulkProductUpdate);
+productRouter.delete("/bulk-delete", bulkDeleteById);
+productRouter.patch("/product/:id", updateProduct);
+productRouter.delete("/product/:id", deleteProductById);
+productRouter.get("/product/:id", getProductById);
+module.exports = { productRouter };

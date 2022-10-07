@@ -26,3 +26,7 @@ exports.bulkProductService = async (data) => {
   });
   console.log(result);
 };
+exports.getProductServiceById = async (id) => {
+  const result = await Product.findById(id);
+  return result;
+};

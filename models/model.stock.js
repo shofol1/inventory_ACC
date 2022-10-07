@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const { ObjectId } = mongoose.Schema.Types;
-const productSchema = mongoose.Schema(
+const stockSchema = mongoose.Schema(
   {
     productId: {
       type: ObjectId,
@@ -12,7 +12,6 @@ const productSchema = mongoose.Schema(
       type: String,
       required: [true, "Please provide a  product name."],
       trim: true,
-      unique: true,
       minLength: [3, "Product name at least 3 characters."],
       maxLength: [100, "Product name is too large."],
       lowercase: true,
@@ -41,10 +40,7 @@ const productSchema = mongoose.Schema(
     },
     imageUrl: [
       {
-        name: {
-          type: String,
-          required: true,
-        },
+        type: String,
         validate: {
           validator: (value) => {
             let isValid = true;
@@ -56,21 +52,21 @@ const productSchema = mongoose.Schema(
                   isValid = false;
                 }
               });
+              return isValid;
             }
-            return isValid;
           },
         },
       },
     ],
-    brnad: {
+    brand: {
       name: {
         type: String,
         required: true,
       },
       id: {
         type: ObjectId,
-        required: true,
         ref: "Brand",
+        required: true,
       },
     },
     status: {
@@ -89,20 +85,20 @@ const productSchema = mongoose.Schema(
         lowercase: true,
         enum: {
           values: [
-            "Rangpure",
-            "Dhaka",
-            "Mymansingh",
-            "Syhlet",
-            "chittagang",
-            "Barishal",
-            "Khulna",
+            "dhaka",
+            "rajshahi",
+            "chattogram",
+            "sylhet",
+            "khulna",
+            "barishal",
+            "rangpur",
+            "mymensingh",
           ],
           message: "{VALUES} is not a valid store name.",
         },
       },
       id: {
         type: ObjectId,
-        required: true,
         ref: "Store",
       },
     },
@@ -118,6 +114,11 @@ const productSchema = mongoose.Schema(
         ref: "Supplier",
       },
     },
+    sellCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
   },
   {
     timestamps: true,
@@ -126,13 +127,13 @@ const productSchema = mongoose.Schema(
 
 //instance injection
 
-productSchema.methods.logger = function () {
+stockSchema.methods.logger = function () {
   console.log(`the save one is ${this.name}`);
 };
 
 //middlewares->pre and post
 
-productSchema.pre("save", function (next) {
+stockSchema.pre("save", function (next) {
   console.log("before save");
   if (this.quantity == 0) {
     this.status = "out-of-stock";
@@ -146,6 +147,6 @@ productSchema.pre("save", function (next) {
 
 //model create
 
-const Product = mongoose.model("Product", productSchema);
+const Stock = mongoose.model("Stock", stockSchema);
 
-module.exports = { Product };
+module.exports = { Stock };

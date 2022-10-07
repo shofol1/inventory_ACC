@@ -1,25 +1,9 @@
-const { Product } = require("../models/model.product");
-const {
-  bulkDeleteServiceProduct,
-  productServiceDelete,
-  bulkProductService,
-  getAllProducts,
-  getProductServiceById,
-} = require("../services/service");
+const { Stock } = require("../models/model.stock");
 
-exports.welcome = (req, res) => {
-  res.send("Route is working! YaY!");
-};
-
-exports.insertProduct = async (req, res, next) => {
+exports.insertStock = async (req, res, next) => {
   try {
-    const newProduct = req.body;
-    const product = new Product(newProduct);
-
-    //goto middleware
-    // if (product.quantity == 0) {
-    //   product.status = "out-of-stock";
-    // }
+    const newStock = req.body;
+    const product = new Stock(newStock);
     const result = await product.save();
     result.logger();
     res.json({
@@ -35,37 +19,8 @@ exports.insertProduct = async (req, res, next) => {
     });
   }
 };
-exports.getProduct = async (req, res, next) => {
+exports.getStock = async (req, res, next) => {
   try {
-    // const product = await Product.find({
-    //   $or: [{ name: "iphone" }, { quantity: 100 }],
-    // });
-    // const product = await Product.find({
-    //   status: { $ne: "out-of-stock" },
-    // });
-    // const product = await Product.find({
-    //   quantity: { $lt: 500 },
-    // });
-    // const product = await Product.find({
-    //   quantity: { $gte: 500 },
-    // });
-    // const product = await Product.find({}, "-name -price");
-    // const product = await Product.find({}, "-name -price").limit(2);
-    // const product = await Product.find({}, "-name -price").sort({
-    //   quantity: -1,
-    // });
-    // const product = await Product.find({}).select({name: 1 });
-    // const product = await Product.find({}).select({ _id: 0 });
-
-    //using query builder
-    // const product = await Product.where("name")
-    //   .equals("iphone")
-    //   .where("price")
-    //   .gt(100)
-    //   .limit(1);
-
-    //advanced query
-
     let filters = { ...req.query };
     const filterStingify = JSON.stringify(filters);
 
@@ -183,15 +138,6 @@ exports.bulkDeleteById = async (req, res, next) => {
 exports.uploadImage = async (req, res, next) => {
   try {
     res.status(200).json({ data: req.files });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-exports.getProductById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const result = await getProductServiceById(id);
-    res.status(200).json({ status: "success", data: result });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
