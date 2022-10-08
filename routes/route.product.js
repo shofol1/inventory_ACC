@@ -15,6 +15,7 @@ const productRouter = express.Router();
 const { router } = require("../app");
 const uploader = require("../middlewear/middlewear.upload");
 const middlewearVerifyUser = require("../middlewear/middlewear.verifyUser");
+const middlewearAuthorization = require("../middlewear/middlewear.authorization");
 
 //if all routes need user login
 // router.use(middlewearVerifyUser);
@@ -22,7 +23,12 @@ const middlewearVerifyUser = require("../middlewear/middlewear.verifyUser");
 // productRouter.post("/upload-image", uploader.single("image"), uploadImage);
 productRouter.post("/upload-image", uploader.array("image"), uploadImage);
 productRouter.get("/all-product", getProduct);
-productRouter.post("/insert", insertProduct);
+productRouter.post(
+  "/insert",
+  middlewearVerifyUser,
+  middlewearAuthorization("admin", "store-manager"),
+  insertProduct
+);
 productRouter.patch("/bulk-update", bulkProductUpdate);
 productRouter.delete("/bulk-delete", bulkDeleteById);
 productRouter.patch("/product/:id", updateProduct);
