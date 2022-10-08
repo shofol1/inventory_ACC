@@ -6,6 +6,8 @@ exports.generateToken = (user) => {
     email: user.email,
     role: user.role,
   };
-  const result = jwt.sign(payload, process.env.SECRET_TOKEN);
+  const result = jwt.sign(payload, process.env.SECRET_TOKEN, {
+    expiresIn: "20s",
+  });
   return result;
 };

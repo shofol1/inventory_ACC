@@ -59,3 +59,15 @@ exports.loginUser = async (req, res, next) => {
     res.status(400).json({ status: "faild", message: error.message });
   }
 };
+
+exports.getME = async (req, res, next) => {
+  try {
+    const result = await findUserByEmailService(req.user?.email);
+    res.status(200).json({
+      status: "success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(403).json({ status: "fail", message: error.message });
+  }
+};

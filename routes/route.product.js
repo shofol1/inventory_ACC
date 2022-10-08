@@ -14,6 +14,10 @@ const productRouter = express.Router();
 
 const { router } = require("../app");
 const uploader = require("../middlewear/middlewear.upload");
+const middlewearVerifyUser = require("../middlewear/middlewear.verifyUser");
+
+//if all routes need user login
+// router.use(middlewearVerifyUser);
 
 // productRouter.post("/upload-image", uploader.single("image"), uploadImage);
 productRouter.post("/upload-image", uploader.array("image"), uploadImage);
