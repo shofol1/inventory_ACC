@@ -9,15 +9,17 @@ const {
   bulkDeleteById,
   uploadImage,
 } = require("../controllers/controller.product");
-const { insertStock, getStock } = require("../controllers/controller.stock");
+const {
+  insertStock,
+  getStock,
+  getStockById,
+} = require("../controllers/controller.stock");
 const stockRouter = express.Router();
 
 const uploader = require("../middlewear/middlewear.upload");
 
-// userRouter.post("/upload-image", uploader.single("image"), uploadImage);
-
-stockRouter.post("/upload-image", uploader.array("image"), uploadImage);
 stockRouter.route("/").post(insertStock).get(getStock);
+stockRouter.route("/:id").get(getStockById);
 // stockRouter.patch("/bulk-update", bulkProductUpdate);
 // stockRouter.delete("/bulk-delete", bulkDeleteById);
 // stockRouter.patch("/stock/:id", updateStock);

@@ -104,6 +104,16 @@ userSchema.methods.comparePassword = function (password, hash) {
   return isValidPassword;
 };
 
+userSchema.methods.generateConfirmationToken = function () {
+  const token = crypto.randomBytes(32).toString("hex");
+  this.confirmationToken = token;
+  const date = new Date();
+
+  date.setDate(date.getDate() + 1);
+  this.confirmationTokenExpires = date;
+  return token;
+};
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
